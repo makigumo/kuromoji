@@ -153,23 +153,13 @@ public abstract class TokenInfoDictionaryCompilerBase<T extends DictionaryEntryB
     }
 
     public List<File> getCsvFiles(File dir) {
-        FilenameFilter filter = new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".csv");
-            }
-        };
+        FilenameFilter filter = (dir1, name) -> name.endsWith(".csv");
 
         ArrayList<File> files = new ArrayList<>();
         Collections.addAll(files, dir.listFiles(filter));
         // since the order these files are processed can affect how some words are chosen,
         // we ensure files are sorted by name rather than OS-specific file comparison rules
-        Collections.sort(files, new Comparator<File>() {
-            @Override
-            public int compare(File a, File b) {
-                return a.getName().compareTo(b.getName());
-            }
-        });
+        Collections.sort(files, (a, b) -> a.getName().compareTo(b.getName()));
 
         return files;
     }
